@@ -29,24 +29,24 @@
 
 #### Iteration 2: UNIT-02 -- User Input & AI (L)
 - [x] Functional Design
-- [ ] Code Generation
-- [ ] Code Review
+- [x] Code Generation
+- [x] Code Review
 - [ ] Build & Test
 
 #### Iteration 3: UNIT-03 -- Verification Flow (S)
 - [ ] Code Generation
-- [ ] Code Review
+- [x] Code Review
 - [ ] Build & Test
 
 #### Iteration 4: UNIT-04 -- Admin List & Analysis (M)
 - [ ] Functional Design
 - [ ] Code Generation
-- [ ] Code Review
+- [x] Code Review
 - [ ] Build & Test
 
 #### Iteration 5: UNIT-05 -- Export & Preview (S)
 - [ ] Code Generation
-- [ ] Code Review
+- [x] Code Review
 - [ ] Build & Test
 
 ### CLOSURE
@@ -54,6 +54,6 @@
 
 ## Current Status
 - **Current Phase**: CONSTRUCTION
-- **Current Stage**: UNIT-02 / Code Generation -> In Progress
+- **Current Stage**: UNIT-02 / Code Review -> COMPLETE (GO). Next: Build & Test
 - **Current Unit**: UNIT-02 (User Input & AI)
 - **Brownfield**: true
