@@ -1,12 +1,5 @@
 .git
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.venv/
-db.sqlite3
-
 # Node
 node_modules/
 dist/

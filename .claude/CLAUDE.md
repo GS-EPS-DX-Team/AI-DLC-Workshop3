@@ -5,19 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 기술 스택
 
 - **프론트엔드**: React 18 + Vite (포트 3000)
-- **백엔드**: FastAPI + Uvicorn (포트 8000)
-- **데이터베이스**: SQLite (`db.sqlite3`, WAL 모드, 외래키 활성)
+- **데이터 저장**: localStorage (브라우저 로컬, 백엔드 없음)
 
 ## 개발 명령어
 
 ```bash
-# 백엔드
-cd backend
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
-
-# 프론트엔드
 cd frontend
 npm install
 npm run dev        # http://localhost:3000
@@ -26,9 +18,8 @@ npm run build      # 프로덕션 빌드 → dist/
 
 ## 아키텍처
 
-- `backend/main.py` — FastAPI 앱 진입점, 라우터 등록
-- `backend/database.py` — SQLite 연결 및 트랜잭션 관리 (`get_db()` 컨텍스트 매니저)
-- `frontend/` — React SPA, Vite 개발 서버가 `/api/*` 요청을 백엔드(8000)로 프록시
+- `frontend/` — React SPA (Vite), 데이터는 localStorage로 관리
+- 데이터 접근은 커스텀 훅(`useStorage` 등)으로 추상화하여 향후 백엔드 전환에 대비
 
 ## 문서 규칙
 
@@ -38,12 +29,10 @@ npm run build      # 프로덕션 빌드 → dist/
 |---------|------|
 | `aidlc-docs/prd/` | 전체 제품 요구사항 명세 (PRD-001~) |
 | `aidlc-docs/scr/` | 화면 명세 (SCR-001~) |
-| `aidlc-docs/api/` | 백엔드 API 명세 (API-001~) |
-| `aidlc-docs/db/` | DB 명세 — **프로젝트 전체 용어의 기준(Single Source of Truth)** |
+| `aidlc-docs/db/` | 용어 사전 — **프로젝트 전체 용어의 기준(Single Source of Truth)** |
 
-- **용어 통일**: 모든 문서의 엔티티·필드명은 `aidlc-docs/db/schema.md` 테이블명·컬럼명 기준
-- **DB 네이밍**: 테이블 snake_case 복수형, 컬럼 snake_case, 외래키 `{참조테이블_단수}_id`
-- 모든 테이블에 `id`(PK), `created_at`, `updated_at` 포함
+- **용어 통일**: 모든 문서의 엔티티·필드명은 `aidlc-docs/db/schema.md`의 용어 매핑 기준
+- **네이밍**: 엔티티 snake_case 복수형, 필드 snake_case
 
 ## AIDLC 워크플로우
 
