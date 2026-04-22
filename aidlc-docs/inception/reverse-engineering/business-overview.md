@@ -4,40 +4,31 @@
 
 ```mermaid
 graph LR
-    User[End User / Browser]
-    Frontend[React SPA<br>Port 3000]
-    Backend[FastAPI Server<br>Port 8000]
-    DB[(SQLite<br>db.sqlite3)]
+    User[사용자 / 브라우저]
+    ReactApp[React SPA<br>Port 3000]
+    LS[(localStorage)]
 
-    User -->|HTTP| Frontend
-    Frontend -->|/api proxy| Backend
-    Backend -->|SQL| DB
+    User -->|HTTP| ReactApp
+    ReactApp -->|읽기/쓰기| LS
 ```
 
-**Text alternative**: End User accesses the React SPA (port 3000) via browser. The SPA proxies API calls under `/api` to the FastAPI backend (port 8000). The backend connects to a local SQLite database file (db.sqlite3).
+**텍스트 대안**: 사용자가 브라우저에서 React SPA에 접근합니다. 앱은 localStorage에 데이터를 읽고 씁니다. 외부 서버 통신 없음.
 
 ## Business Description
 
-This codebase is an **empty application scaffold** with no business logic implemented yet. The system provides the foundational wiring for a web application:
+이 코드베이스는 **비즈니스 로직이 없는 빈 애플리케이션 스캐폴드**입니다.
 
-- A **React single-page application** serving as the frontend
-- A **FastAPI REST API** serving as the backend
-- A **SQLite database** for local data persistence
+- **React SPA**: 프론트엔드 전용 애플리케이션
+- **localStorage**: 브라우저 로컬 데이터 저장 (백엔드/DB 없음)
 
-**Who uses it**: No end users yet. The scaffold is a starting point for developers.
+**대상 사용자**: 아직 없음. 개발 시작점으로서의 스캐폴드.
 
-**Why it exists**: To provide a pre-configured project structure with frontend-backend communication already wired up (CORS, Vite proxy), ready for business features to be built on top.
-
-**Notable observation**: The HTML document sets `lang="ko"` (Korean), suggesting the target audience or development team may be Korean-speaking.
+**HTML `lang="ko"`**: 한국어 대상 프로젝트.
 
 ## Core Business Transactions
 
-No business transactions exist. The only functional endpoint is:
-
-| Transaction | Endpoint | Description |
-|-------------|----------|-------------|
-| Health Check | `GET /health` | Returns `{"status": "ok"}` to verify the backend is running |
+비즈니스 트랜잭션 없음. 기능 구현 전 상태입니다.
 
 ## Business Dictionary
 
-No domain-specific terms are present in the codebase. The project has not yet defined a business domain.
+도메인 용어 없음. `aidlc-docs/db/schema.md`에서 요구사항 확정 후 용어를 정의합니다.

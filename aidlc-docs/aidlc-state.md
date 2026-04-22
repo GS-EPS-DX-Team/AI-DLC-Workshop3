@@ -4,8 +4,9 @@
 - **Project Type**: Brownfield
 - **Start Date**: 2026-04-22
 - **Workspace Root**: /workshop/AI-DLC-Workshop3
-- **Languages**: Python (FastAPI backend), JavaScript/JSX (React frontend)
-- **Build System**: pip (requirements.txt), npm (package.json), Vite (bundler)
+- **Languages**: JavaScript/JSX (React frontend)
+- **Build System**: npm (package.json), Vite (bundler)
+- **Data Storage**: localStorage (브라우저 로컬, 백엔드 없음)
 
 ## Phase Progress
 

@@ -2,74 +2,21 @@
 
 ## REST Endpoints
 
-| Method | Path | Description | Request Body | Response Body | Auth |
-|--------|------|-------------|-------------|---------------|------|
-| GET | `/health` | Health check | None | `{"status": "ok"}` | None |
+**없음.** 백엔드 서버가 없으므로 REST API 엔드포인트가 존재하지 않습니다.
 
-### GET /health
+## Data Access
 
-**Purpose**: Verify the backend server is running and responsive.
+데이터는 브라우저 localStorage를 통해 관리됩니다.
+현재 localStorage 접근 코드는 구현되어 있지 않으며, 향후 storage 추상화 계층을 통해 구현 예정입니다.
 
-**Request**: No parameters, no headers required.
+### 예정된 localStorage 구조
 
-**Response**:
-```json
-{
-  "status": "ok"
-}
-```
-
-**HTTP Status Codes**:
-- `200 OK`: Server is healthy
-
-**Notes**: This is the only endpoint in the application. No business endpoints exist.
-
-## Frontend API Proxy
-
-The Vite dev server proxies all requests matching `/api/*` to the backend:
-
-| Frontend Request | Backend Request | Transformation |
-|-----------------|-----------------|----------------|
-| `GET /api/health` | `GET /health` | Strip `/api` prefix |
-| `GET /api/anything` | `GET /anything` | Strip `/api` prefix |
-
-**Configuration** (from `vite.config.js`):
-- Proxy target: `http://localhost:8000`
-- Path rewrite: `/api` prefix is removed
-- `changeOrigin: true` is set
+| 항목 | 설명 |
+|------|------|
+| 키 네이밍 | `aidlc-docs/db/schema.md` 용어 사전 기준 |
+| 데이터 형식 | JSON 직렬화 |
+| 용량 제한 | 약 5MB (브라우저별 상이) |
 
 ## Internal APIs
 
-No service-to-service APIs exist. The backend is a single process.
-
-## Data Models
-
-### Database Layer (Prepared but Unused)
-
-The `database.py` module provides connection management but defines no data models:
-
-- **Connection type**: `sqlite3.Connection` with `sqlite3.Row` row factory
-- **PRAGMA settings**: `journal_mode=WAL`, `foreign_keys=ON`
-- **No table definitions**: No schema, no migrations, no ORM models
-- **No Pydantic models**: Despite pydantic being a dependency, no request/response models are defined
-
-### Implied Data Contract
-
-The only data contract is the health check response:
-```python
-# Implicit schema (not formally defined)
-{"status": str}  # Always returns "ok"
-```
-
-## API Versioning
-
-No API versioning strategy is in place. There is no `/v1/` prefix or version headers.
-
-## OpenAPI / Swagger
-
-FastAPI automatically generates OpenAPI documentation at:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-- **OpenAPI JSON**: `http://localhost:8000/openapi.json`
-
-The API title is set to `"API Server"` (from `FastAPI(title="API Server")`).
+서비스 간 API 없음. 프론트엔드 전용 애플리케이션입니다.

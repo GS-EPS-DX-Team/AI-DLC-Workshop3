@@ -2,81 +2,41 @@
 
 ## System Overview
 
-**Architectural Style**: Client-Server Monolith (two-tier)
+**Architectural Style**: Single-Page Application (프론트엔드 전용)
 
-The system follows a simple two-tier architecture:
-- **Presentation tier**: React SPA bundled by Vite, served on port 3000 in development
-- **Application + Data tier**: FastAPI server on port 8000, directly connected to a local SQLite file database
-
-There is no separate data tier service; SQLite runs embedded within the Python process.
+단일 계층 아키텍처로, React SPA가 브라우저에서 모든 로직을 처리합니다.
+데이터는 localStorage에 저장하며, 별도의 백엔드 서버나 데이터베이스는 없습니다.
 
 ## Component Diagram
 
 ```mermaid
 graph TD
-    subgraph Frontend_Tier["Frontend (Vite Dev Server - Port 3000)"]
-        ViteProxy[Vite Proxy /api]
+    subgraph Browser["브라우저"]
         ReactApp[React Application]
+        LocalStorage[(localStorage)]
     end
 
-    subgraph Backend_Tier["Backend (Uvicorn - Port 8000)"]
-        CORS[CORS Middleware]
-        FastAPIApp[FastAPI Application]
-        DBModule[database.py<br>SQLite Connection Manager]
-    end
-
-    subgraph Data_Tier["Data (Local File)"]
-        SQLite[(db.sqlite3)]
-    end
-
-    ReactApp --> ViteProxy
-    ViteProxy -->|Rewrite /api to /| CORS
-    CORS --> FastAPIApp
-    FastAPIApp --> DBModule
-    DBModule --> SQLite
+    ReactApp -->|읽기/쓰기| LocalStorage
 ```
 
-**Text alternative**: The React application sends requests through the Vite proxy (which rewrites `/api` prefix). Requests pass through CORS middleware into the FastAPI application. The FastAPI app uses database.py to manage SQLite connections to the local db.sqlite3 file.
-
-## Deployment Diagram
-
-```mermaid
-graph TD
-    subgraph DevMachine["Developer Machine"]
-        NodeProcess["Node.js Process<br>(Vite dev server, port 3000)"]
-        PythonProcess["Python Process<br>(Uvicorn, port 8000)"]
-        SQLiteFile["db.sqlite3<br>(file on disk)"]
-    end
-
-    NodeProcess -->|HTTP proxy| PythonProcess
-    PythonProcess -->|File I/O| SQLiteFile
-```
-
-**Text alternative**: Both the Node.js process (Vite dev server) and the Python process (Uvicorn) run on the same developer machine. The Python process reads/writes to the SQLite file on disk.
+**텍스트 대안**: React 애플리케이션이 브라우저의 localStorage에 직접 데이터를 읽고 씁니다. 외부 서버 통신 없음.
 
 ## Data Flow
 
-There is no meaningful data flow implemented. The only path is:
+현재 구현된 데이터 흐름은 없습니다. `App.jsx`는 빈 플레이스홀더입니다.
 
-1. Browser sends `GET /api/health`
-2. Vite proxy rewrites to `GET /health` and forwards to `localhost:8000`
-3. FastAPI CORS middleware validates the origin (`http://localhost:3000`)
-4. FastAPI handler returns `{"status": "ok"}`
-5. Response flows back through proxy to the browser
+향후 데이터 흐름:
+1. 사용자가 UI에서 액션 수행
+2. 커스텀 훅(`useLocalStorage` 등)을 통해 storage 계층 호출
+3. storage 계층이 localStorage에 JSON 직렬화하여 저장/조회
+4. React 상태 갱신 → UI 리렌더링
 
-The `database.py` module is present but is **not imported or used** by `main.py`. It exists as pre-wired infrastructure for future use.
+## Key Architectural Decisions
 
-## Integration Points
-
-No external system integrations exist. The system is entirely self-contained on a single machine.
-
-## Key Architectural Decisions (Inferred)
-
-| ID | Decision | Rationale (Inferred) |
-|----|----------|---------------------|
-| AD-001 | FastAPI as backend framework | Modern async Python framework with automatic OpenAPI documentation and Pydantic validation |
-| AD-002 | SQLite as database | Lightweight, zero-configuration local database suitable for development and small-scale applications |
-| AD-003 | Vite as frontend bundler | Fast HMR (Hot Module Replacement), modern ESM-based development experience |
-| AD-004 | Proxy-based API communication | `/api` prefix proxy avoids CORS issues in production while CORS middleware handles development flexibility |
-| AD-005 | WAL mode + foreign keys enabled | SQLite configured with Write-Ahead Logging for better concurrent read performance and foreign key enforcement for data integrity |
-| AD-006 | React with vanilla JSX (no TypeScript) | Despite having `@types/react` in devDependencies, no TypeScript configuration exists; the project uses plain JSX |
+| ID | Decision | Rationale |
+|----|----------|-----------|
+| AD-001 | 프론트엔드 전용 (백엔드 없음) | 빠른 프로토타이핑, 인프라 비용 없음 |
+| AD-002 | localStorage 기반 데이터 저장 | 서버 없이 브라우저에서 데이터 영속화 |
+| AD-003 | storage 추상화 계층 도입 예정 | 향후 백엔드/IndexedDB 전환 시 수정 범위 최소화 |
+| AD-004 | Vite 번들러 | 빠른 HMR, ESM 기반 개발 환경 |
+| AD-005 | React with JSX (TypeScript 미사용) | 간결한 설정, 빠른 시작 |

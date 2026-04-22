@@ -3,62 +3,49 @@
 ## Component Classification
 
 ### Core (Business Logic, Domain Models)
-**No components.** No business logic or domain models have been implemented.
+**없음.** 비즈니스 로직 및 도메인 모델 미구현.
 
-### API (Controllers, Handlers, Routes)
+### Data (Storage, Data Access)
+**없음.** localStorage 추상화 계층 미구현. 향후 `storage/` 디렉토리에서 관리 예정.
 
-| Component | File | Description |
-|-----------|------|-------------|
-| FastAPI App | `backend/main.py` | Application instance with a single health check handler |
+### Infrastructure
+**없음.** 인프라 코드, Docker, CI/CD 없음.
 
-### Data (Repositories, Data Access, Migrations)
+### Integration (External Services)
+**없음.** 외부 서비스 연동 없음.
 
-| Component | File | Description |
-|-----------|------|-------------|
-| Database Connection Manager | `backend/database.py` | SQLite connection factory with context manager for transaction safety |
+### Shared (Utilities)
+**없음.** 공유 유틸리티 모듈 없음.
 
-**Notes**: No repositories, no ORM models, no migration scripts, no seed data.
-
-### Infrastructure (CDK, Terraform, Deployment)
-**No components.** No infrastructure-as-code, no Dockerfiles, no deployment scripts, no CI/CD pipelines.
-
-### Integration (External Service Clients)
-**No components.** No external service integrations.
-
-### Shared (Utilities, Common Libraries)
-**No components.** No shared utility modules.
-
-### Test (Test Suites, Fixtures, Mocks)
-**No components.** No test files, no test configuration, no test dependencies.
+### Test
+**없음.** 테스트 파일, 설정, 의존성 없음.
 
 ### Presentation (Frontend UI)
 
 | Component | File | Description |
 |-----------|------|-------------|
-| HTML Shell | `frontend/index.html` | Entry HTML document with root div and module script loader |
-| React Bootstrap | `frontend/src/main.jsx` | Creates React root, renders App in StrictMode |
-| App Component | `frontend/src/App.jsx` | Root component rendering a plain `<div>App</div>` placeholder |
+| HTML Shell | `frontend/index.html` | 진입 HTML, root div 및 모듈 스크립트 로더 |
+| React Bootstrap | `frontend/src/main.jsx` | React root 생성, StrictMode로 App 렌더링 |
+| App Component | `frontend/src/App.jsx` | 루트 컴포넌트 — `<div>App</div>` 플레이스홀더 |
 
 ### Build & Configuration
 
 | Component | File | Description |
 |-----------|------|-------------|
-| Python Dependencies | `backend/requirements.txt` | Lists FastAPI, uvicorn, pydantic |
-| Node Package Config | `frontend/package.json` | Lists React, React DOM, Vite, type definitions |
-| Vite Config | `frontend/vite.config.js` | Dev server port, API proxy, React plugin |
-| Git Ignore | `.gitignore` | Patterns for Python, Node, IDE, OS artifacts |
+| Node Package Config | `frontend/package.json` | React, React DOM, Vite 의존성 |
+| Vite Config | `frontend/vite.config.js` | 개발 서버 포트(3000), React 플러그인 |
+| Git Ignore | `.gitignore` | Node, IDE, OS 아티팩트 패턴 |
 
-## Summary by Category
+## Summary
 
 | Category | Count | Status |
 |----------|-------|--------|
-| Core | 0 | Empty |
-| API | 1 | Minimal (health check only) |
-| Data | 1 | Scaffold only (no models/tables) |
-| Infrastructure | 0 | Empty |
-| Integration | 0 | Empty |
-| Shared | 0 | Empty |
-| Test | 0 | Empty |
-| Presentation | 3 | Scaffold only (no UI) |
-| Build & Config | 4 | Functional |
-| **Total** | **9** | **Scaffold** |
+| Core | 0 | 비어있음 |
+| Data | 0 | 비어있음 (localStorage 추상화 예정) |
+| Infrastructure | 0 | 비어있음 |
+| Integration | 0 | 비어있음 |
+| Shared | 0 | 비어있음 |
+| Test | 0 | 비어있음 |
+| Presentation | 3 | 스캐폴드 (UI 없음) |
+| Build & Config | 3 | 동작 중 |
+| **Total** | **6** | **스캐폴드** |
