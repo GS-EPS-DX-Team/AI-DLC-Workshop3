@@ -14,7 +14,7 @@
 - [x] Workspace Detection
 - [x] Reverse Engineering (brownfield only)
 - [x] Requirements Analysis
-- [ ] User Stories
+- [x] User Stories
 - [ ] Application Design
 - [ ] Units Generation
 - [ ] Workflow Planning
@@ -27,5 +27,5 @@
 
 ## Current Status
 - **Current Phase**: INCEPTION
-- **Current Stage**: User Stories -> In Progress
+- **Current Stage**: Application Design -> In Progress
 - **Brownfield**: true
