@@ -16,7 +16,7 @@
 - [x] Requirements Analysis
 - [x] User Stories
 - [x] Application Design
-- [ ] Units Generation
+- [x] Units Generation
 - [ ] Workflow Planning
 
 ### CONSTRUCTION
@@ -27,5 +27,5 @@
 
 ## Current Status
 - **Current Phase**: INCEPTION
-- **Current Stage**: Units Generation -> Gate Pending
+- **Current Stage**: Workflow Planning -> Gate Pending
 - **Brownfield**: true
