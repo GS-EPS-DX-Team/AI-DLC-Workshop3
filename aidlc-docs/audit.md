@@ -48,3 +48,56 @@
 - **Next Step**: Developer must address HIGH issues before re-review.
 
 2026-04-22T06:43:38Z | Agent completed | Session: unknown
+
+---
+
+## 2026-04-22 | UNIT-01 Build & Test | PASS
+
+**Agent**: aidlc-reviewer
+**Phase**: CONSTRUCTION
+**Stage**: UNIT-01 / Build & Test
+
+### Build
+- **Command**: `npm run build`
+- **Status**: SUCCESS (vite v6.4.2, 39 modules transformed, 2.72s)
+- **Output**: dist/index.html (0.40 KB), dist/assets/index-BOeGSNxR.css (10.12 KB), dist/assets/index-DmsmWmvK.js (171.12 KB)
+
+### Dev Server
+- **Command**: `npx vite --port 3000`
+- **Status**: Started successfully in 285ms
+- **HTTP 200** on `http://localhost:3000/`
+
+### File Verification
+- 22/22 files present at expected paths
+
+### Functional Checks
+- useStorage: localStorage.setItem BEFORE setStoredValue (line 17-18), JSON parse errors handled, quota errors handled
+- AppProvider: all 5 localStorage keys initialized (mhm_requirements, mhm_themes, mhm_user_stories, mhm_conversations, mhm_reference_file)
+- Header: uses NavLink with isActive callback for active state styling
+- ConfirmDialog: Escape key via keydown listener, backdrop onClick, auto-focus cancel via useRef+useEffect
+- NotFoundPage: Korean text ("페이지를 찾을 수 없습니다"), Links to /user and /admin
+- idGenerator: generates prefix + 8 hex chars via Math.random().toString(16)
+- dateFormatter: formatDate, formatDateTime, nowISO all present with null/invalid guards
+- All UI text in Korean
+- index.html: lang="ko", title "말해 뭐해"
+- Tailwind CSS v3 utility classes confirmed in production build CSS (10.12 KB)
+
+### Route Verification
+- `/` redirects to `/user` via `<Navigate to="/user" replace />`
+- `/user` renders UserPage stub
+- `/admin` renders AdminPage stub
+- `*` renders NotFoundPage
+
+### Notes
+- Tailwind v3 used instead of v4 due to Node 18 / aarch64 constraint (accepted in code review)
+- react-router-dom v6.30.3 used instead of v7.5.0 (compatible API, no functional difference for UNIT-01 usage)
+
+### Verdict: PASS
+
+---
+
+## 2026-04-22 | UNIT-02 Functional Design | GATE PENDING
+
+| Timestamp | Phase | Stage | Event | Details |
+|-----------|-------|-------|-------|---------|
+| 2026-04-22T14:00:00Z | CONSTRUCTION | UNIT-02 / Functional Design | GATE PENDING | Functional design complete for UNIT-02 (User Input & AI). 11 files specified: 5 hooks (useConversation, useAIService, useRequirements, useThemes, useUserStories), 5 components (WelcomeMessage, MessageList, MessageBubble, ChatInput, VoiceInput), 1 page implementation (UserPage). Key specs: exact AI system prompt, request/response JSON schema, error handling for 6 failure modes, voice input state machine with Web Speech API, conversation persistence lifecycle, auto-scroll behavior, responsive layout. Extended extracted_items schema documented for UNIT-03 handoff. Artifact: aidlc-docs/construction/unit-02/functional-design.md. Awaiting team approval. |
