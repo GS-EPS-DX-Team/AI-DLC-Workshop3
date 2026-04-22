@@ -13,7 +13,7 @@
 ### INCEPTION
 - [x] Workspace Detection
 - [x] Reverse Engineering (brownfield only)
-- [ ] Requirements Analysis
+- [x] Requirements Analysis
 - [ ] User Stories
 - [ ] Application Design
 - [ ] Units Generation
@@ -27,5 +27,5 @@
 
 ## Current Status
 - **Current Phase**: INCEPTION
-- **Current Stage**: Requirements Analysis -> Awaiting Answers
+- **Current Stage**: User Stories -> In Progress
 - **Brownfield**: true
