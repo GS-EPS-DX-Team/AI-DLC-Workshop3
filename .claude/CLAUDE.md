@@ -120,7 +120,7 @@ backend/           — FastAPI 백엔드
   database.py      — SQLite 연결, 트랜잭션 관리
 frontend/          — React 프론트엔드 (Vite)
   src/App.jsx      — 루트 컴포넌트
-docs/              — 요구사항 문서 (용어는 DB 명세 기준으로 통일)
+aidlc-docs/        — 모든 문서·산출물 (AIDLC + 요구사항 명세)
   prd/             — 전체 제품 요구사항 명세
   scr/             — 화면 명세
   api/             — 백엔드 API 명세
@@ -148,7 +148,7 @@ npm run build        # 프로덕션 빌드 → dist/
 
 ## 문서 작성 규칙
 
-- **용어 통일**: 모든 문서에서 사용하는 엔티티·필드명은 `docs/db/schema.md`의 테이블명·컬럼명을 기준
+- **용어 통일**: 모든 문서에서 사용하는 엔티티·필드명은 `aidlc-docs/db/schema.md`의 테이블명·컬럼명을 기준
 - **ID 체계**: PRD-001, SCR-001, API-001 순번 부여
 - **DB 네이밍**: 테이블 snake_case 복수형, 컬럼 snake_case, 외래키 `{참조테이블_단수}_id`
 
