@@ -23,7 +23,7 @@
 
 #### Iteration 1: UNIT-01 -- Foundation (M)
 - [x] Functional Design
-- [ ] Code Generation
+- [x] Code Generation
 - [ ] Code Review
 - [ ] Build & Test
 
@@ -54,6 +54,6 @@
 
 ## Current Status
 - **Current Phase**: CONSTRUCTION
-- **Current Stage**: UNIT-01 / Code Generation -> In Progress
+- **Current Stage**: UNIT-01 / Build & Test -> In Progress
 - **Current Unit**: UNIT-01 (Foundation)
 - **Brownfield**: true

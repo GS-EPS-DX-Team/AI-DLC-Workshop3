@@ -14,8 +14,8 @@ export function useStorage(key, initialValue) {
   const setValue = (value) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
       localStorage.setItem(key, JSON.stringify(valueToStore));
+      setStoredValue(valueToStore);
     } catch (error) {
       console.warn(`localStorage 쓰기 오류 (${key}):`, error);
     }
