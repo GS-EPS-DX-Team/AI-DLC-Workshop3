@@ -46,14 +46,14 @@
 
 #### Iteration 5: UNIT-05 -- Export & Preview (S)
 - [x] Code Generation
-- [ ] Code Review
-- [ ] Build & Test
+- [x] Code Review
+- [x] Build & Test
 
 ### CLOSURE
 (initialized after Construction)
 
 ## Current Status
 - **Current Phase**: CONSTRUCTION
-- **Current Stage**: UNIT-05 / Code Generation -> Complete
+- **Current Stage**: CONSTRUCTION COMPLETE -- all 5 units done
 - **Current Unit**: UNIT-05 (Export & Preview)
 - **Brownfield**: true
