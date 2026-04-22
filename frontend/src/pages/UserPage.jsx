@@ -56,10 +56,13 @@ export default function UserPage() {
     updateExtractedItemStatus(messageId, itemIndex, "rejected");
   }
 
-  async function handleSend(text, inputType) {
+  async function handleSend(text, inputType, fileInfo) {
     const requirement = addRequirement(text, inputType);
 
-    addMessage("user", text, []);
+    const displayContent = fileInfo
+      ? `📎 ${fileInfo.name}\n\n${text.length > 300 ? text.slice(0, 300) + "..." : text}`
+      : text;
+    addMessage("user", displayContent, []);
 
     const result = await extractRequirements(text);
 
