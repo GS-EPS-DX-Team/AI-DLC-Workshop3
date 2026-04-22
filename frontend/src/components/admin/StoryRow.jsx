@@ -8,10 +8,29 @@ function truncateText(text, maxLength = 60) {
   return text.substring(0, maxLength) + "...";
 }
 
-export default function StoryRow({ story, themeName, onRowClick }) {
+export default function StoryRow({
+  story,
+  themeName,
+  isSelected,
+  onToggle,
+  onRowClick,
+}) {
+  function handleCheckboxChange(e) {
+    e.stopPropagation();
+    onToggle(story.id);
+  }
+
+  function handleCheckboxKeyDown(e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.stopPropagation();
+      onToggle(story.id);
+    }
+  }
+
   return (
     <div
-      className="grid grid-cols-1 md:grid-cols-[1fr_120px_120px_100px] gap-2 md:gap-4 px-4 py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors"
+      className="grid grid-cols-[auto_1fr] md:grid-cols-[40px_1fr_120px_120px_100px] gap-2 md:gap-4 px-4 py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors"
       role="listitem"
       onClick={onRowClick}
       onKeyDown={(e) => {
@@ -24,6 +43,20 @@ export default function StoryRow({ story, themeName, onRowClick }) {
       aria-label={`유저스토리: ${truncateText(story.story, 40)}`}
       data-testid={`story-row-${story.id}`}
     >
+      {/* Checkbox */}
+      <div className="flex items-center justify-center">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={handleCheckboxChange}
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={handleCheckboxKeyDown}
+          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+          aria-label={`${truncateText(story.story, 30)} 선택`}
+          data-testid={`story-checkbox-${story.id}`}
+        />
+      </div>
+
       {/* Story summary */}
       <div className="flex flex-col gap-1 min-w-0">
         <p className="text-sm text-gray-900 truncate md:overflow-visible md:whitespace-normal md:line-clamp-1">

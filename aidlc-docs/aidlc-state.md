@@ -41,11 +41,11 @@
 #### Iteration 4: UNIT-04 -- Admin List & Analysis (M)
 - [x] Functional Design
 - [x] Code Generation
-- [ ] Code Review
-- [ ] Build & Test
+- [x] Code Review
+- [x] Build & Test
 
 #### Iteration 5: UNIT-05 -- Export & Preview (S)
-- [ ] Code Generation
+- [x] Code Generation
 - [ ] Code Review
 - [ ] Build & Test
 
@@ -54,6 +54,6 @@
 
 ## Current Status
 - **Current Phase**: CONSTRUCTION
-- **Current Stage**: UNIT-04 / Code Generation -> COMPLETE
-- **Current Unit**: UNIT-04 (Admin List & Analysis)
+- **Current Stage**: UNIT-05 / Code Generation -> Complete
+- **Current Unit**: UNIT-05 (Export & Preview)
 - **Brownfield**: true
