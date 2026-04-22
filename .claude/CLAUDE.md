@@ -2,131 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Overview
-
-AIDLC (AI-Driven Development Life Cycle) framework for Claude Code. Uses agents, skills, and hooks to deliver systematic software development through a three-phase adaptive workflow. This workspace starts empty — application code is generated during the CONSTRUCTION phase.
-
-## Workflow State
-
-- **State file**: `aidlc-docs/aidlc-state.md` (current Phase, Stage, progress)
-- **Audit log**: `aidlc-docs/audit.md` (all gate approvals, agent activity records)
-
-## Phase Model
-
-| Phase | Description |
-|-------|-------------|
-| **INCEPTION** | Project discovery, requirements analysis, user stories, application design, unit decomposition, workflow planning |
-| **CONSTRUCTION** | Functional design, NFR design, infrastructure design, code generation, code review, build/test |
-| **OPERATIONS** | Deployment, monitoring, maintenance (future expansion) |
-
-## Workflow Routing (Automatic Progression)
-
-When a development-related request comes in, the AIDLC workflow is followed automatically. Natural language works -- no slash commands required.
-
-### New Project or Feature Request
-When the user says "build me X", "I want to create Y", "let's develop Z", etc.:
-1. Check if `aidlc-docs/aidlc-state.md` exists
-2. If not found → run Workspace Detection automatically → enter Requirements Analysis
-3. If found → read current state and continue from the next pending stage
-
-### Automatic Stage Transitions
-When a stage receives team approval ("Approve & Continue"), the next stage is automatically recommended and initiated:
-- Workspace Detection → Requirements Analysis → User Stories → Application Design → Units Generation → Workflow Planning
-- Construction follows execution-plan.md, running only stages marked EXECUTE in order
-
-### Slash Commands = Direct Control
-`/aidlc-*` commands are used to directly target or re-run a specific stage:
-- Re-run a specific stage: `/aidlc-requirements`
-- Add a skipped stage: `/aidlc-stories`
-- Check status: `/aidlc-status`
-- Manually run quality gate: `/aidlc-gate [unit]`
-
-## Gate Rules
-
-- Each stage requires explicit team approval ("Approve") before proceeding
-- All questions are written in dedicated .md files (never asked in chat)
-- Cannot proceed if any `[Answer]:` tag is empty or contains vague answers
-- Cannot advance to the next stage while ambiguity remains unresolved
-- "When in doubt, ask the question" -- over-clarification is always better than wrong assumptions
-
-## File Conventions
-
-| Type | Location |
-|------|----------|
-| Application code | Workspace root (`./`) |
-| All documents/artifacts | `aidlc-docs/` |
-| Phase plans | `aidlc-docs/{phase}/plans/` |
-| Question files | Same directory as related artifacts |
-
-## Agent Delegation
-
-| Agent | Purpose |
-|-------|---------|
-| **aidlc-analyst** | All Inception stages + Construction functional/NFR design. Question generation, ambiguity analysis, design document creation. No Bash access |
-| **aidlc-architect** | Infrastructure design. Maps logical components to AWS services with Bash + MCP tool access for AWS CLI, documentation, pricing, and IaC validation |
-| **aidlc-developer** | Construction code generation. Plan creation and code writing based on approved designs. Full tool access |
-| **aidlc-reviewer** | Construction verification. Code review (GO/NO-GO), build/test (PASS/FAIL). Read-only -- cannot modify code |
-
-## Available Slash Commands
-
-| Command | Description |
-|---------|-------------|
-| `/aidlc-detect` | Workspace detection and AIDLC initialization |
-| `/aidlc-reverse` | Reverse engineering analysis of existing codebase |
-| `/aidlc-requirements` | Requirements analysis and question generation |
-| `/aidlc-stories` | User story development |
-| `/aidlc-app-design` | Application architecture design |
-| `/aidlc-units` | Development unit decomposition |
-| `/aidlc-plan` | Workflow execution plan creation |
-| `/aidlc-functional` | Functional design (Construction) |
-| `/aidlc-nfr` | Non-functional requirements analysis and design |
-| `/aidlc-infra` | Infrastructure design |
-| `/aidlc-code` | Code generation execution |
-| `/aidlc-test` | Build and test execution |
-| `/aidlc-gate` | Quality gate review and approval |
-| `/aidlc-status` | Current workflow status dashboard |
-
-## Extensions
-
-Optional rule sets that can be enabled during Requirements Analysis via opt-in questions:
-- **Security Baseline**: Blocking security constraints (encryption, logging, auth, input validation, secrets management)
-- **Property-Based Testing**: PBT rules for round-trip, invariant, and idempotence testing
-
-Extensions are activated by creating marker files in `aidlc-docs/extensions/`. Corresponding rules in `.claude/rules/aidlc-ext-*.md` use `paths` frontmatter for conditional loading.
-
-## Adaptive Depth
-
-The list of artifacts stays the same, but the depth of each artifact adjusts based on project complexity.
-A simple bug fix gets concise artifacts; a system migration gets comprehensive ones with full traceability.
-
-## Session Resumption
-
-On session start or resumption, always:
-1. Read `aidlc-docs/aidlc-state.md` to determine current Phase/Stage
-2. Check `*-questions.md` files for unanswered items
-3. Continue from where work was interrupted
-
 ## 기술 스택
 
 - **프론트엔드**: React 18 + Vite (포트 3000)
 - **백엔드**: FastAPI + Uvicorn (포트 8000)
-- **데이터베이스**: SQLite (파일: `db.sqlite3`)
-
-## 프로젝트 구조
-
-```
-backend/           — FastAPI 백엔드
-  main.py          — 앱 진입점, 라우터 등록
-  database.py      — SQLite 연결, 트랜잭션 관리
-frontend/          — React 프론트엔드 (Vite)
-  src/App.jsx      — 루트 컴포넌트
-aidlc-docs/        — 모든 문서·산출물 (AIDLC + 요구사항 명세)
-  prd/             — 전체 제품 요구사항 명세
-  scr/             — 화면 명세
-  api/             — 백엔드 API 명세
-  db/              — DB 명세 (용어 기준 문서, Single Source of Truth)
-    schema.md      — 테이블 정의, ER 다이어그램, 용어 매핑
-```
+- **데이터베이스**: SQLite (`db.sqlite3`, WAL 모드, 외래키 활성)
 
 ## 개발 명령어
 
@@ -140,20 +20,63 @@ uvicorn main:app --reload --port 8000
 # 프론트엔드
 cd frontend
 npm install
-npm run dev          # http://localhost:3000
-npm run build        # 프로덕션 빌드 → dist/
+npm run dev        # http://localhost:3000
+npm run build      # 프로덕션 빌드 → dist/
 ```
 
-프론트엔드 개발 서버는 `/api/*` 요청을 백엔드(8000)로 프록시합니다.
+## 아키텍처
 
-## 문서 작성 규칙
+- `backend/main.py` — FastAPI 앱 진입점, 라우터 등록
+- `backend/database.py` — SQLite 연결 및 트랜잭션 관리 (`get_db()` 컨텍스트 매니저)
+- `frontend/` — React SPA, Vite 개발 서버가 `/api/*` 요청을 백엔드(8000)로 프록시
 
-- **용어 통일**: 모든 문서에서 사용하는 엔티티·필드명은 `aidlc-docs/db/schema.md`의 테이블명·컬럼명을 기준
-- **ID 체계**: PRD-001, SCR-001, API-001 순번 부여
+## 문서 규칙
+
+모든 명세는 `aidlc-docs/` 하위에서 관리합니다:
+
+| 디렉토리 | 용도 |
+|---------|------|
+| `aidlc-docs/prd/` | 전체 제품 요구사항 명세 (PRD-001~) |
+| `aidlc-docs/scr/` | 화면 명세 (SCR-001~) |
+| `aidlc-docs/api/` | 백엔드 API 명세 (API-001~) |
+| `aidlc-docs/db/` | DB 명세 — **프로젝트 전체 용어의 기준(Single Source of Truth)** |
+
+- **용어 통일**: 모든 문서의 엔티티·필드명은 `aidlc-docs/db/schema.md` 테이블명·컬럼명 기준
 - **DB 네이밍**: 테이블 snake_case 복수형, 컬럼 snake_case, 외래키 `{참조테이블_단수}_id`
+- 모든 테이블에 `id`(PK), `created_at`, `updated_at` 포함
 
-## Getting Started
+## AIDLC 워크플로우
 
-1. Run `/aidlc-detect` (or describe what you want to build — the workflow starts automatically)
-2. Follow the INCEPTION stages: Detection → Requirements → Stories → Design → Units → Planning
-3. CONSTRUCTION stages execute per-unit based on the workflow plan
+AIDLC(AI-Driven Development Life Cycle) 3단계 적응형 개발 프레임워크입니다.
+
+- **상태 파일**: `aidlc-docs/aidlc-state.md` (현재 Phase/Stage 진행 상황)
+- **감사 로그**: `aidlc-docs/audit.md`
+
+| Phase | 설명 |
+|-------|------|
+| **INCEPTION** | 요구사항 분석 → 유저 스토리 → 설계 → 유닛 분해 → 워크플로우 계획 |
+| **CONSTRUCTION** | 기능 설계, NFR, 인프라, 코드 생성, 리뷰, 빌드/테스트 (유닛별) |
+| **OPERATIONS** | 배포, 모니터링 (향후 확장) |
+
+개발 요청 시 자동으로 워크플로우가 시작됩니다. `/aidlc-*` 명령으로 특정 단계를 직접 실행할 수도 있습니다.
+
+### 주요 규칙
+
+- 각 단계는 팀 승인("Approve") 후 다음 단계로 진행
+- 질문은 전용 `.md` 파일에 작성 (채팅에서 직접 묻지 않음)
+- `[Answer]:` 태그가 비어있거나 모호하면 다음 단계 진행 불가
+
+### 에이전트 역할
+
+| 에이전트 | 역할 |
+|---------|------|
+| `aidlc-analyst` | Inception 전 단계 + Construction 설계. Bash 접근 불가 |
+| `aidlc-architect` | 인프라 설계. AWS 서비스 매핑, Bash/MCP 접근 가능 |
+| `aidlc-developer` | 코드 생성. 승인된 설계 기반 구현. 전체 도구 접근 |
+| `aidlc-reviewer` | 코드 리뷰(GO/NO-GO), 빌드/테스트(PASS/FAIL). 읽기 전용 |
+
+### 세션 재개
+
+1. `aidlc-docs/aidlc-state.md` 읽어 현재 Phase/Stage 확인
+2. `*-questions.md` 파일에서 미답변 항목 확인
+3. 중단된 지점부터 계속 진행
