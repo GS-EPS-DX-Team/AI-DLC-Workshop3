@@ -117,7 +117,56 @@ export function useAIService() {
   }
 
   async function analyzeSystemSupport(stories, referenceContent) {
-    throw new Error("analyzeSystemSupport는 UNIT-04에서 구현됩니다.");
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const systemPrompt = `당신은 시스템 분석 전문가입니다. 아래 참조 문서는 기존 시스템의 기능 목록입니다. 각 유저스토리를 참조 문서와 비교하여, 기존 시스템에서 이미 지원하는 기능인지(supported) 새로 개발이 필요한 기능인지(needs_development) 판단해주세요.\n\n반드시 다음 JSON 형식으로 응답하세요:\n{"results": [{"user_story_id": "ID", "system_support": "supported 또는 needs_development", "reason": "판단 근거"}]}\n\n규칙:\n1. 각 유저스토리에 대해 반드시 user_story_id, system_support, reason을 포함해야 합니다.\n2. system_support는 반드시 "supported" 또는 "needs_development" 중 하나여야 합니다.\n3. reason은 판단 근거를 한국어로 간결하게 설명해주세요.\n4. 참조 문서에 명시적으로 해당 기능이 언급되어 있으면 "supported", 없으면 "needs_development"로 판단하세요.`;
+
+      // Build stories text for the user message
+      const storiesText = stories
+        .map(
+          (s) =>
+            `- ID: ${s.id}\n  유저스토리: ${s.story}\n  목적: ${s.purpose}`
+        )
+        .join("\n\n");
+
+      const userContent = `## 참조 문서\n${referenceContent}\n\n## 분석 대상 유저스토리\n${storiesText}`;
+
+      const messages = [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userContent },
+      ];
+
+      const result = await callChatCompletions(messages, 0.2);
+
+      // Validate response structure
+      if (!result || !Array.isArray(result.results)) {
+        throw new Error("AI 응답을 처리할 수 없습니다. 다시 시도해주세요.");
+      }
+
+      // Validate each result item
+      const validResults = result.results.filter(
+        (item) =>
+          item.user_story_id &&
+          (item.system_support === "supported" ||
+            item.system_support === "needs_development") &&
+          item.reason
+      );
+
+      if (validResults.length < result.results.length) {
+        console.warn(
+          `AI 응답에서 유효하지 않은 분석 결과 ${result.results.length - validResults.length}건을 제외했습니다.`
+        );
+      }
+
+      return { results: validResults };
+    } catch (err) {
+      setError(err.message);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function clearError() {

@@ -35,12 +35,12 @@
 
 #### Iteration 3: UNIT-03 -- Verification Flow (S)
 - [x] Code Generation
-- [ ] Code Review
-- [ ] Build & Test
+- [x] Code Review
+- [x] Build & Test
 
 #### Iteration 4: UNIT-04 -- Admin List & Analysis (M)
-- [ ] Functional Design
-- [ ] Code Generation
+- [x] Functional Design
+- [x] Code Generation
 - [ ] Code Review
 - [ ] Build & Test
 
@@ -54,6 +54,6 @@
 
 ## Current Status
 - **Current Phase**: CONSTRUCTION
-- **Current Stage**: UNIT-03 / Code Generation -> Complete
-- **Current Unit**: UNIT-03 (Verification Flow)
+- **Current Stage**: UNIT-04 / Code Generation -> COMPLETE
+- **Current Unit**: UNIT-04 (Admin List & Analysis)
 - **Brownfield**: true
