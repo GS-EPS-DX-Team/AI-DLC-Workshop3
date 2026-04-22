@@ -6,6 +6,8 @@ import ConfirmDialog from "../components/common/ConfirmDialog";
 import { useConversation } from "../hooks/useConversation";
 import { useAIService } from "../hooks/useAIService";
 import { useRequirements } from "../hooks/useRequirements";
+import { useThemes } from "../hooks/useThemes";
+import { useUserStories } from "../hooks/useUserStories";
 
 export default function UserPage() {
   const {
@@ -13,15 +15,46 @@ export default function UserPage() {
     startNewConversation,
     addMessage,
     getCurrentMessages,
+    updateExtractedItemStatus,
   } = useConversation();
   const { isLoading, error, extractRequirements, clearError } = useAIService();
   const { addRequirement, updateStatus } = useRequirements();
+  const { addTheme } = useThemes();
+  const { addUserStory } = useUserStories();
 
   const [showConfirmNewConversation, setShowConfirmNewConversation] =
     useState(false);
 
   const messages = getCurrentMessages();
   const hasMessages = messages.length > 0;
+
+  function handleApproveItem(messageId, item, itemIndex) {
+    // 1. Update requirement status to "verified"
+    if (item.requirement_id) {
+      updateStatus(item.requirement_id, "verified");
+    }
+
+    // 2. Save theme (dedup by name)
+    const theme = addTheme(item.theme, item.theme_description || "");
+
+    // 3. Save user story
+    addUserStory({
+      requirement_id: item.requirement_id,
+      theme_id: theme.id,
+      story: item.story,
+      purpose: item.purpose,
+      acceptance_criteria: item.acceptance_criteria,
+    });
+
+    // 4. Update conversation extracted item status to "verified"
+    updateExtractedItemStatus(messageId, itemIndex, "verified");
+  }
+
+  function handleRejectItem(messageId, item, itemIndex) {
+    // Only update conversation extracted item status to "rejected"
+    // Do NOT save to requirements/themes/user_stories entities
+    updateExtractedItemStatus(messageId, itemIndex, "rejected");
+  }
 
   async function handleSend(text, inputType) {
     const requirement = addRequirement(text, inputType);
@@ -153,7 +186,12 @@ export default function UserPage() {
 
       {/* Conversation area */}
       {hasMessages ? (
-        <MessageList messages={messages} isLoading={isLoading} />
+        <MessageList
+          messages={messages}
+          isLoading={isLoading}
+          onApprove={handleApproveItem}
+          onReject={handleRejectItem}
+        />
       ) : (
         <div className="flex-1 overflow-hidden">
           <WelcomeMessage />

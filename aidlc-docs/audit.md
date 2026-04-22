@@ -114,3 +114,46 @@
 - **Issues found**: 1 MEDIUM, 2 LOW
 - **Details**: See full Code Review Report below this entry
 
+
+---
+
+## 2026-04-22 | UNIT-02 Build & Test | Verdict: PASS
+
+**Agent**: aidlc-reviewer
+**Phase**: CONSTRUCTION
+**Stage**: UNIT-02 / Build & Test
+
+### Build
+- **Status**: SUCCESS
+- **Command**: `npm run build`
+- **Duration**: 3.07s
+- **Output**: 51 modules transformed, dist/index.html (0.40 kB), dist/assets/index.css (15.42 kB), dist/assets/index.js (188.07 kB)
+- **Errors**: None
+
+### Dev Server
+- **Status**: SUCCESS
+- **Command**: `npx vite --port 3000`
+- **HTTP Status**: 200
+- **Content-Type**: text/html
+- **Route verification**: curl localhost:3000 returned valid HTML with lang="ko" and title "말해 뭐해"
+
+### File Verification
+All 11 UNIT-02 files exist:
+1. src/hooks/useConversation.js (94 lines) - EXISTS
+2. src/hooks/useAIService.js (134 lines) - EXISTS
+3. src/hooks/useRequirements.js (43 lines) - EXISTS
+4. src/hooks/useThemes.js (37 lines) - EXISTS
+5. src/hooks/useUserStories.js (65 lines) - EXISTS
+6. src/components/user/WelcomeMessage.jsx (15 lines) - EXISTS
+7. src/components/user/MessageList.jsx (34 lines) - EXISTS
+8. src/components/user/MessageBubble.jsx (123 lines) - EXISTS
+9. src/components/user/ChatInput.jsx (120 lines) - EXISTS
+10. src/components/user/VoiceInput.jsx (136 lines) - EXISTS
+11. src/pages/UserPage.jsx (180 lines) - EXISTS
+
+### DoD Verification (Code-Based)
+All 11 DoD items verified by code reading. See Build & Test Report for details.
+
+### Issues
+None (zero HIGH/MED/LOW issues).
+

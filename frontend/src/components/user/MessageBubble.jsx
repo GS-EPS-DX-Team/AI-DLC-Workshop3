@@ -1,4 +1,6 @@
-export default function MessageBubble({ message }) {
+import VerificationControls from "./VerificationControls";
+
+export default function MessageBubble({ message, onApprove, onReject }) {
   const { role, content, extracted_items } = message;
 
   if (role === "user") {
@@ -34,6 +36,8 @@ export default function MessageBubble({ message }) {
                 key={index}
                 item={item}
                 index={index}
+                onApprove={() => onApprove && onApprove(message.id, item, index)}
+                onReject={() => onReject && onReject(message.id, item, index)}
               />
             ))}
           </div>
@@ -43,7 +47,7 @@ export default function MessageBubble({ message }) {
   );
 }
 
-function ExtractedItemCard({ item, index }) {
+function ExtractedItemCard({ item, index, onApprove, onReject }) {
   const statusConfig = {
     pending: {
       borderColor: "border-gray-200",
@@ -108,7 +112,7 @@ function ExtractedItemCard({ item, index }) {
         </ul>
       </div>
 
-      {/* Verification controls placeholder -- buttons added by UNIT-03 */}
+      {/* Verification controls */}
       <div
         className="flex items-center justify-between pt-2 border-t border-gray-100"
         data-testid={`verification-slot-${index}`}
@@ -116,7 +120,11 @@ function ExtractedItemCard({ item, index }) {
         <span className={`text-xs font-medium ${config.statusColor}`}>
           {config.statusText}
         </span>
-        {/* UNIT-03 will render VerificationControls here */}
+        <VerificationControls
+          item={item}
+          onApprove={onApprove}
+          onReject={onReject}
+        />
       </div>
     </div>
   );

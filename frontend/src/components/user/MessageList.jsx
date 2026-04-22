@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 import LoadingIndicator from "../common/LoadingIndicator";
 
-export default function MessageList({ messages, isLoading }) {
+export default function MessageList({ messages, isLoading, onApprove, onReject }) {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +18,12 @@ export default function MessageList({ messages, isLoading }) {
     >
       <div className="mx-auto max-w-3xl">
         {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+          <MessageBubble
+            key={message.id}
+            message={message}
+            onApprove={onApprove}
+            onReject={onReject}
+          />
         ))}
         {isLoading && (
           <div className="flex justify-start mb-4">
