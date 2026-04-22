@@ -1,7 +1,10 @@
-# AIDLC Enhanced for Claude Code
+# CLAUDE.md
 
-A native Claude Code implementation of AIDLC (AI-Driven Development Life Cycle) using agents, skills, and hooks.
-Delivers systematic, verifiable software development through a three-phase adaptive workflow.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Overview
+
+AIDLC (AI-Driven Development Life Cycle) framework for Claude Code. Uses agents, skills, and hooks to deliver systematic software development through a three-phase adaptive workflow. This workspace starts empty — application code is generated during the CONSTRUCTION phase.
 
 ## Workflow State
 
@@ -102,3 +105,55 @@ On session start or resumption, always:
 1. Read `aidlc-docs/aidlc-state.md` to determine current Phase/Stage
 2. Check `*-questions.md` files for unanswered items
 3. Continue from where work was interrupted
+
+## 기술 스택
+
+- **프론트엔드**: React 18 + Vite (포트 3000)
+- **백엔드**: FastAPI + Uvicorn (포트 8000)
+- **데이터베이스**: SQLite (파일: `db.sqlite3`)
+
+## 프로젝트 구조
+
+```
+backend/           — FastAPI 백엔드
+  main.py          — 앱 진입점, 라우터 등록
+  database.py      — SQLite 연결, 트랜잭션 관리
+frontend/          — React 프론트엔드 (Vite)
+  src/App.jsx      — 루트 컴포넌트
+docs/              — 요구사항 문서 (용어는 DB 명세 기준으로 통일)
+  prd/             — 전체 제품 요구사항 명세
+  scr/             — 화면 명세
+  api/             — 백엔드 API 명세
+  db/              — DB 명세 (용어 기준 문서, Single Source of Truth)
+    schema.md      — 테이블 정의, ER 다이어그램, 용어 매핑
+```
+
+## 개발 명령어
+
+```bash
+# 백엔드
+cd backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+
+# 프론트엔드
+cd frontend
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # 프로덕션 빌드 → dist/
+```
+
+프론트엔드 개발 서버는 `/api/*` 요청을 백엔드(8000)로 프록시합니다.
+
+## 문서 작성 규칙
+
+- **용어 통일**: 모든 문서에서 사용하는 엔티티·필드명은 `docs/db/schema.md`의 테이블명·컬럼명을 기준
+- **ID 체계**: PRD-001, SCR-001, API-001 순번 부여
+- **DB 네이밍**: 테이블 snake_case 복수형, 컬럼 snake_case, 외래키 `{참조테이블_단수}_id`
+
+## Getting Started
+
+1. Run `/aidlc-detect` (or describe what you want to build — the workflow starts automatically)
+2. Follow the INCEPTION stages: Detection → Requirements → Stories → Design → Units → Planning
+3. CONSTRUCTION stages execute per-unit based on the workflow plan
