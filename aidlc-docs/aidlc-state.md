@@ -13,19 +13,47 @@
 ### INCEPTION
 - [x] Workspace Detection
 - [x] Reverse Engineering (brownfield only)
-- [ ] Requirements Analysis
-- [ ] User Stories
-- [ ] Application Design
-- [ ] Units Generation
-- [ ] Workflow Planning
+- [x] Requirements Analysis
+- [x] User Stories
+- [x] Application Design
+- [x] Units Generation
+- [x] Workflow Planning
 
 ### CONSTRUCTION
-(initialized after Workflow Planning)
+
+#### Iteration 1: UNIT-01 -- Foundation (M)
+- [x] Functional Design
+- [x] Code Generation
+- [x] Code Review
+- [x] Build & Test
+
+#### Iteration 2: UNIT-02 -- User Input & AI (L)
+- [x] Functional Design
+- [x] Code Generation
+- [x] Code Review
+- [x] Build & Test
+
+#### Iteration 3: UNIT-03 -- Verification Flow (S)
+- [x] Code Generation
+- [x] Code Review
+- [x] Build & Test
+
+#### Iteration 4: UNIT-04 -- Admin List & Analysis (M)
+- [x] Functional Design
+- [x] Code Generation
+- [x] Code Review
+- [x] Build & Test
+
+#### Iteration 5: UNIT-05 -- Export & Preview (S)
+- [x] Code Generation
+- [x] Code Review
+- [x] Build & Test
 
 ### CLOSURE
 (initialized after Construction)
 
 ## Current Status
-- **Current Phase**: INCEPTION
-- **Current Stage**: Requirements Analysis -> Awaiting Answers
+- **Current Phase**: CONSTRUCTION
+- **Current Stage**: CONSTRUCTION COMPLETE -- all 5 units done
+- **Current Unit**: UNIT-05 (Export & Preview)
 - **Brownfield**: true
