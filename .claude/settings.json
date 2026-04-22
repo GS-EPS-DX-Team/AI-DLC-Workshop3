@@ -1,0 +1,39 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'if [ -f aidlc-docs/aidlc-state.md ]; then PHASE=$(grep -m1 \"Current Phase\" aidlc-docs/aidlc-state.md | sed \"s/.*: *//\" || echo \"UNKNOWN\"); STAGE=$(grep -m1 \"Current Stage\" aidlc-docs/aidlc-state.md | sed \"s/.*: *//\" || echo \"UNKNOWN\"); PENDING=$(find aidlc-docs -name \"*-questions.md\" -exec grep -l \"\\[Answer\\]:[ ]*$\" {} + 2>/dev/null | tr \"\\n\" \", \"); echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"SessionStart\\\",\\\"additionalContext\\\":\\\"AIDLC project active. Phase: ${PHASE}. Stage: ${STAGE}. ${PENDING:+Pending question files: ${PENDING%, }. }Read aidlc-docs/aidlc-state.md for full context.\\\"}}\"; else echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"SessionStart\\\",\\\"additionalContext\\\":\\\"No AIDLC project found. Use /aidlc-detect to initialize.\\\"}}\"; fi'",
+            "statusMessage": "Checking AIDLC project state..."
+          },
+          {
+            "type": "prompt",
+            "prompt": "If no AIDLC project is detected (aidlc-state.md does not exist) and the user has not previously been welcomed, briefly introduce AI-DLC: a three-phase adaptive software development workflow (INCEPTION -> CONSTRUCTION -> OPERATIONS) that adapts to project complexity. Mention that it asks deep questions to eliminate ambiguity, produces structured design artifacts, and generates code with quality gates. Suggest /aidlc-detect to get started. Keep the welcome under 5 sentences. Only show this once per project."
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "aidlc-.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'mkdir -p aidlc-docs && echo \"$(date -u +%Y-%m-%dT%H:%M:%SZ) | Agent completed | Session: ${CLAUDE_SESSION_ID:-unknown}\" >> aidlc-docs/audit.md'",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)"
+    ]
+  }
+}
